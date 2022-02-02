@@ -416,10 +416,14 @@ func (f *ScmpFilter) addRuleWrapper(call ScmpSyscall, action ScmpAction, exact b
 
 	var retCode C.int
 	if exact {
+		fmt.Printf("Exact\n")
 		retCode = C.seccomp_rule_add_exact_array(f.filterCtx, action.toNative(), C.int(call), length, cond)
 	} else {
+		fmt.Printf("Not exact\n")
 		retCode = C.seccomp_rule_add_array(f.filterCtx, action.toNative(), C.int(call), length, cond)
 	}
+
+	fmt.Printf("The return value is %d\n", retCode)
 
 	if retCode != 0 {
 		switch e := errRc(retCode); e {
